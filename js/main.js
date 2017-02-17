@@ -1,19 +1,25 @@
 (function () {
-	var map, marker;
+	var map = new google.maps.Map(document.querySelector('.mapWrapper')), marker;
 
-	function initMap() {
-		map = new google.maps.Map(document.querySelector('.mapWrapper'), {
-			center : { lat: 6.621114, lng: 3.372077},
-			zoom : 14
-		});
+	function initMap(position) {
+		map.setCenter ({ lat: position.coords.latitude, lng: position.coords.longitude});
+		map.setZoom (14);
 
 		marker = new google.maps.Marker({
-			position : {lat: 6.621114, lng: 3.372077},
+			position : {lat: position.coords.latitude, lng: position.coords.longitude},
 			map: map, 
 			title: "youre here"
 		});
 	}
 
-	initMap()
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(initMap, handleError);
+	} else {
+		console.log('it  is broken');
+	}
 
-})();
+	function handleError() {
+		console.log('SOMETHING IS SERIOUSLY WRONG');
+	}
+
+	})();
